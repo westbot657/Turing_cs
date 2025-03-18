@@ -11,6 +11,25 @@ namespace Turing.Wasm
     {
         private const string WASMRS = "C:/Users/Westb/Desktop/script_bs/target/release/script_bs";
 
+        private static int currentId = 0;
+        private static Dictionary<int, object> WasmRefLookupTable = new Dictionary<int, object>();
+
+        public static object getObject(int id)
+        {
+            return WasmRefLookupTable.ContainsKey(id) ? WasmRefLookupTable[id] : null;
+        }
+
+        public static int insertObject(object obj)
+        {
+            WasmRefLookupTable.Add(currentId, obj);
+            return currentId++;
+        }
+
+        public static void removeObject(int id)
+        {
+            WasmRefLookupTable.Remove(id);
+        }
+        
 
         [StructLayout(LayoutKind.Sequential)]
         struct Vector3
