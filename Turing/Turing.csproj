@@ -95,6 +95,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Analyzer Include="C:\Users\Westb\RiderProjects\TuringSourceGen\TuringSourceGen\bin\Debug\netstandard2.0\TuringSourceGen.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="TuringController.cs" />
