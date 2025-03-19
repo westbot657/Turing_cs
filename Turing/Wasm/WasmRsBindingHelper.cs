@@ -48,6 +48,17 @@ namespace Turing.Wasm
             RustName = name;
         }
     }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    public class RustWrapped : Attribute
+    {
+        public string RustRustBindingFunction { get; }
+
+        public RustWrapped(string rustBindingFunction)
+        {
+            RustRustBindingFunction = rustBindingFunction;
+        }
+    }
     
     [AttributeUsage(AttributeTargets.Method)]
     public class WasmRsMethod : Attribute

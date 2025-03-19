@@ -5,6 +5,7 @@ namespace Turing.Wasm.Wrappers
     [RustClass]
     public partial class ColorNote
     {
+        [RustWrapped("bind_colornote")]
         private NoteController idkIfThisIsTheRightObject;
         
         [RustMethod("colornote_set_position")]

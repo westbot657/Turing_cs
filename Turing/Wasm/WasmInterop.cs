@@ -4,25 +4,30 @@ using System.Runtime.InteropServices;
 
 namespace Turing.Wasm
 {
+    public interface IWasmMemoryObject
+    {
+        int ReferenceId { get; set; }
+    }
+    
     public class WasmInterop
     {
-        private const string WASMRS = "C:/Users/Westb/Desktop/script_bs/target/release/script_bs";
+        public const string WASMRS = "C:/Users/Westb/Desktop/script_bs/target/release/script_bs";
 
         private static int currentId = 0;
-        private static Dictionary<int, object> WasmRefLookupTable = new Dictionary<int, object>();
+        private static Dictionary<int, IWasmMemoryObject> WasmRefLookupTable = new Dictionary<int, IWasmMemoryObject>();
 
-        public static object getObject(int id)
+        public static IWasmMemoryObject getObject(int id)
         {
             return WasmRefLookupTable.ContainsKey(id) ? WasmRefLookupTable[id] : null;
         }
 
-        public static int insertObject(object obj)
+        public static int InsertObject(IWasmMemoryObject obj)
         {
             WasmRefLookupTable.Add(currentId, obj);
             return currentId++;
         }
 
-        public static void removeObject(int id)
+        public static void RemoveObject(int id)
         {
             
             WasmRefLookupTable.Remove(id);
