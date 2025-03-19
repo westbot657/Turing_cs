@@ -95,15 +95,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\Westb\RiderProjects\TuringSourceGen\TuringSourceGen\bin\Debug\netstandard2.0\TuringSourceGen.dll" />
+    <Analyzer Include="C:\Users\Westb\RiderProjects\TuringSourceGen\bin\Debug\netstandard2.0\TuringSourceGen.dll" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>./srcgen_debug</CompilerGeneratedFilesOutputPath>
+</PropertyGroup>
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="TuringController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Wasm\WasmRsMethod.cs" />
+    <Compile Include="Wasm\Codec.cs" />
+    <Compile Include="Wasm\WasmRsBindingHelper.cs" />
     <Compile Include="Wasm\WasmInterop.cs" />
+    <Compile Include="Wasm\Wrappers\ColorNote.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 namespace Turing.Wasm
@@ -27,27 +24,8 @@ namespace Turing.Wasm
 
         public static void removeObject(int id)
         {
+            
             WasmRefLookupTable.Remove(id);
-        }
-        
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct Vector3
-        {
-            public float x, y, z;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct Quaternion
-        {
-            public float x, y, z, w;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct ColorNote
-        {
-            public Vector3 position;
-            public Quaternion orientation;
         }
 
 

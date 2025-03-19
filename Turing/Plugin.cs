@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Generators;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
@@ -40,12 +39,12 @@ namespace Turing
             Log.Error($"[{logName}]: " + message);
         }
 
-        [Init]
         /// <summary>
         /// Called when the plugin is first loaded by IPA (either when the game starts or when the plugin is enabled if it starts disabled).
         /// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
         /// Only use [Init] with one Constructor.
         /// </summary>
+        [Init]
         public void Init(IPALogger logger)
         {
             Instance = this;

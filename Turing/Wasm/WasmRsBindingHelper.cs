@@ -8,7 +8,49 @@ using System.Threading.Tasks;
 
 namespace Turing.Wasm
 {
-    class WasmRsMethod : Attribute
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public class CodecClass : Attribute
+    {
+        
+    }
+    
+    [AttributeUsage(AttributeTargets.Method)]
+    public class Converter : Attribute
+    {
+        
+    }
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public class RustClass : Attribute
+    {
+        
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public class RustMethod : Attribute
+    {
+        public string RustName { get; }
+
+        public RustMethod(string name)
+        {
+            RustName = name;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    public class RustField : Attribute
+    {
+        public string RustName { get; }
+
+        public RustField(string name)
+        {
+            RustName = name;
+        }
+    }
+    
+    [AttributeUsage(AttributeTargets.Method)]
+    public class WasmRsMethod : Attribute
     {
         public string WasmName { get; }
         public Type DelegateType { get; }
@@ -20,7 +62,7 @@ namespace Turing.Wasm
         }
     }
 
-    class RsMethods
+    public static class RsMethods
     {
         private static void RegisterMethod(IntPtr name, IntPtr funcPtr)
         {
@@ -42,10 +84,10 @@ namespace Turing.Wasm
 
                 Plugin.Info($"Registering '{attr.WasmName}'");
 
-                Delegate del = Delegate.CreateDelegate(attr.DelegateType, method);
-                IntPtr funcPtr = Marshal.GetFunctionPointerForDelegate(del);
+                var del = Delegate.CreateDelegate(attr.DelegateType, method);
+                var funcPtr = Marshal.GetFunctionPointerForDelegate(del);
 
-                IntPtr namePtr = Marshal.StringToHGlobalAnsi(attr.WasmName);
+                var namePtr = Marshal.StringToHGlobalAnsi(attr.WasmName);
                 RegisterMethod(namePtr, funcPtr);
 
                 Marshal.FreeHGlobal(namePtr);
