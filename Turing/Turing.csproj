@@ -94,9 +94,6 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Users\Westb\RiderProjects\TuringSourceGen\bin\Debug\netstandard2.0\TuringSourceGen.dll" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  </ItemGroup>
   <PropertyGroup>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <CompilerGeneratedFilesOutputPath>./srcgen_debug</CompilerGeneratedFilesOutputPath>

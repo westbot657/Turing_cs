@@ -68,23 +68,10 @@ namespace Turing.Wasm
 
         public static void Init()
         {
-            //CsPrintDelegate csPrintFunc = new CsPrintDelegate(CsPrint);
-            //set_function(csPrintFunc);
-
             RsMethods.Register();
-
-            //ColorNote note = new ColorNote
-            //{
-            //    position = new Vector3 { x = 1.0f, y = 2.0f, z = 3.0f },
-            //    orientation = new Quaternion { x = 0.0f, y = 0.707f, z = 0.0f, w = 0.707f }
-            //};
-
-            initialize_wasm();
-
             BindToDll();
-
-            //dll_print(note);
-
+            initialize_wasm();
+            
         }
     }
 }
