@@ -10,8 +10,10 @@ namespace Turing.Wasm
     }
     
     [InteropClass("BindToDll")]
-    public class WasmInterop
+    public partial class WasmInterop
     {
+        
+        // This name is statically defined in source gen, so do NOT change it
         public const string WASMRS = "C:/Users/Westb/Desktop/script_bs/target/release/script_bs";
 
         private static int currentId = 0;
@@ -24,6 +26,7 @@ namespace Turing.Wasm
 
         public static int InsertObject(IWasmMemoryObject obj)
         {
+            obj.ReferenceId = currentId;
             WasmRefLookupTable.Add(currentId, obj);
             return currentId++;
         }
@@ -78,7 +81,7 @@ namespace Turing.Wasm
 
             initialize_wasm();
 
-            // BindToDll();
+            BindToDll();
 
             //dll_print(note);
 
