@@ -27,6 +27,17 @@ namespace Turing.Wasm
         
     }
 
+    [AttributeUsage(AttributeTargets.Class)]
+    public class InteropClass : Attribute
+    {
+        public string RustName { get; set; }
+
+        public InteropClass(string bindGenEntrypoint)
+        {
+            RustName = bindGenEntrypoint;
+        }
+    }
+
     [AttributeUsage(AttributeTargets.Method)]
     public class RustMethod : Attribute
     {

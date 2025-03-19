@@ -9,6 +9,7 @@ namespace Turing.Wasm
         int ReferenceId { get; set; }
     }
     
+    [InteropClass("BindToDll")]
     public class WasmInterop
     {
         public const string WASMRS = "C:/Users/Westb/Desktop/script_bs/target/release/script_bs";
@@ -18,7 +19,7 @@ namespace Turing.Wasm
 
         public static IWasmMemoryObject getObject(int id)
         {
-            return WasmRefLookupTable.ContainsKey(id) ? WasmRefLookupTable[id] : null;
+            return WasmRefLookupTable.TryGetValue(id, out var value) ? value : null;
         }
 
         public static int InsertObject(IWasmMemoryObject obj)
@@ -76,6 +77,8 @@ namespace Turing.Wasm
             //};
 
             initialize_wasm();
+
+            // BindToDll();
 
             //dll_print(note);
 
