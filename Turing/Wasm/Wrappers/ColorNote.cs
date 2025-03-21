@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿
+using System.Runtime.InteropServices;
 
 namespace Turing.Wasm.Wrappers
 {
     [RustClass]
     public partial class ColorNote
     {
-        [RustWrapped("bind_colornote")]
+        [RustWrapped("colornote")]
         private NoteController idkIfThisIsTheRightObject;
         
         [RustMethod("colornote_set_position")]

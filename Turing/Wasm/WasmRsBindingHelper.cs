@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Turing.Wasm
 {
@@ -70,51 +64,15 @@ namespace Turing.Wasm
             RustRustBindingFunction = rustBindingFunction;
         }
     }
+
+    public class RustCallback : Attribute
+    {
+        public string RustName { get; }
+
+        public RustCallback(string rustName)
+        {
+            RustName = rustName;
+        }
+    }
     
-    [AttributeUsage(AttributeTargets.Method)]
-    public class WasmRsMethod : Attribute
-    {
-        public string WasmName { get; }
-        public Type DelegateType { get; }
-
-        public WasmRsMethod(string name, Type delegateType)
-        {
-            WasmName = name;
-            DelegateType = delegateType;
-        }
-    }
-
-    public static class RsMethods
-    {
-        private static void RegisterMethod(IntPtr name, IntPtr funcPtr)
-        {
-            WasmInterop.register_function(name, funcPtr);
-        }
-
-        public static void Register()
-        {
-            Plugin.Debug("cwd: " + System.IO.Directory.GetCurrentDirectory());
-
-            var methods = typeof(WasmInterop)
-                .GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(m => m.GetCustomAttributes(typeof(WasmRsMethod), false).Any());
-
-            foreach (var method in methods)
-            {
-                var attr = (WasmRsMethod)method.GetCustomAttributes(typeof(WasmRsMethod), false).FirstOrDefault();
-                if (attr == null) continue;
-
-                Plugin.Info($"Registering '{attr.WasmName}'");
-
-                var del = Delegate.CreateDelegate(attr.DelegateType, method);
-                var funcPtr = Marshal.GetFunctionPointerForDelegate(del);
-
-                var namePtr = Marshal.StringToHGlobalAnsi(attr.WasmName);
-                RegisterMethod(namePtr, funcPtr);
-
-                Marshal.FreeHGlobal(namePtr);
-            }
-        }
-    }
-
 }
