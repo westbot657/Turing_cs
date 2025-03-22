@@ -13,7 +13,16 @@ namespace Turing.Wasm
         // This name is statically defined in source gen, so do NOT change it
         public const string WASMRS = "C:/Users/Westb/Desktop/script_bs/target/release/script_bs";
 
-        public static List<object> PersistentMemory = new List<object>();
+        public static List<IDisposable> PersistentMemory = new List<IDisposable>();
+
+        public static void ClearMemory()
+        {
+            foreach (var memory in PersistentMemory)
+            {
+                memory.Dispose();
+            }
+            PersistentMemory.Clear();
+        }
         
         //[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         //delegate void CsPrintDelegate(IntPtr message);
