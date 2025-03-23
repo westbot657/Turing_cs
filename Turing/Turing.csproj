@@ -107,6 +107,7 @@
     <Compile Include="Wasm\WasmRsBindingHelper.cs" />
     <Compile Include="Wasm\WasmInterop.cs" />
     <Compile Include="Wasm\Wrappers\ColorNote.cs" />
+    <Compile Include="Wasm\Wrappers\PrimitiveWrappers.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
