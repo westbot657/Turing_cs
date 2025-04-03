@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Turing.Wasm
+namespace Turing.Interop
 {
     
     [InteropClass("BindToDll")]

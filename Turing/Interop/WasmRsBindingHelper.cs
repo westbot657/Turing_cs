@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Turing.Wasm
+namespace Turing.Interop
 {
 
     [AttributeUsage(AttributeTargets.Class)]

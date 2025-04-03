@@ -1,4 +1,4 @@
-﻿using Turing.Wasm;
+﻿using Turing.Interop;
 using System;
 using System.Collections;
 using System.Collections.Generic;

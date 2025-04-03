@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Turing.Wasm.Wrappers;
+using Turing.Interop.Wrappers;
 
-namespace Turing.Wasm
+namespace Turing.Interop
 {
     
     
@@ -61,17 +61,23 @@ namespace Turing.Wasm
         {
             return d;
         }
+
+        [Converter]
+        public static bool BoolPassThrough(bool b)
+        {
+            return b;
+        }
         
         
 
         // Vec3
         [Converter]
-        public static UnityEngine.Vector3 RsVecToUnityVec(Vector3 vec)
+        public static UnityEngine.Vector3 RsVector3ToUnityVector3(Vector3 vec)
         {
             return new UnityEngine.Vector3(vec.x, vec.y, vec.z);
         }
         [Converter]
-        public static Vector3 UnityVecToRsVec(UnityEngine.Vector3 vec)
+        public static Vector3 UnityVector3ToRsVector3(UnityEngine.Vector3 vec)
         {
             return new Vector3 { x = vec.x, y = vec.y, z = vec.z };
         }
@@ -89,19 +95,19 @@ namespace Turing.Wasm
         {
             return new Quaternion { x = quat.x, y = quat.y, z = quat.z, w = quat.w };
         }
+
         
         
-        
-        // Boolean
+        // string
         [Converter]
-        public static RustBool CsBoolToRsBool(bool b)
+        public static RsString StringToRsString(string str)
         {
-            return new RustBool { value = (byte)(b ? 1 : 0) };
+            return new RsString(str);
         }
         [Converter]
-        public static bool RsBoolToCsBool(RustBool rustBool)
+        public static string RsStringToString(RsString str)
         {
-            return rustBool.value != 0;
+            return str.ToString();
         }
         
     }

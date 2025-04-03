@@ -1,7 +1,7 @@
 ﻿
 using System.Runtime.InteropServices;
 
-namespace Turing.Wasm.Wrappers
+namespace Turing.Interop.Wrappers
 {
     [RustClass]
     public partial class ColorNote

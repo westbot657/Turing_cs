@@ -99,15 +99,16 @@
     <CompilerGeneratedFilesOutputPath>./srcgen_debug</CompilerGeneratedFilesOutputPath>
 </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Interop\Parameters\Parameters.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="TuringController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Wasm\Codec.cs" />
-    <Compile Include="Wasm\WasmRsBindingHelper.cs" />
-    <Compile Include="Wasm\WasmInterop.cs" />
-    <Compile Include="Wasm\Wrappers\ColorNote.cs" />
-    <Compile Include="Wasm\Wrappers\PrimitiveWrappers.cs" />
+    <Compile Include="Interop\Codec.cs" />
+    <Compile Include="Interop\WasmRsBindingHelper.cs" />
+    <Compile Include="Interop\WasmInterop.cs" />
+    <Compile Include="Interop\Wrappers\ColorNote.cs" />
+    <Compile Include="Interop\Wrappers\PrimitiveWrappers.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />

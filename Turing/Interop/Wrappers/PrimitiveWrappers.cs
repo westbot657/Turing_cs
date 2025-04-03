@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Turing.Wasm.Wrappers
+namespace Turing.Interop.Wrappers
 {
     public class PrimitiveWrappers
     {
         
     }
     
-    
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RustBool
-    {
-        public byte value;
-    }
-
 
     [StructLayout(LayoutKind.Sequential)]
     public struct RsString
