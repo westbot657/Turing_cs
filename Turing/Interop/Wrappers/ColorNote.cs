@@ -10,7 +10,7 @@ namespace Turing.Interop.Wrappers
         private NoteController idkIfThisIsTheRightObject;
         
         [RustMethod("colornote_set_position")]
-        private void SetPosition(UnityEngine.Vector3 position, int t)
+        private void SetPosition(UnityEngine.Vector3 position)
         {
             idkIfThisIsTheRightObject.beatPos.Set(position.x, position.y, position.z);
         }
