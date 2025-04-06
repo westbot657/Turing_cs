@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
+using Turing.Interop.Parameters;
 
 namespace Turing.Interop
 {
@@ -41,11 +42,49 @@ namespace Turing.Interop
         [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]
         private static extern void initialize_wasm();
 
+        [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]
+        private static extern RsParams load_script(IntPtr scriptPath);
+        
+        [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]
+        private static extern RsParams call_script_function(IntPtr functionName, RsParams parameters);
+
+        public static void LoadScript(string scriptPath)
+        {
+            var s = Marshal.StringToHGlobalAnsi(scriptPath);
+            var rawResult = load_script(s);
+            Marshal.FreeHGlobal(s);
+            
+            var ret = Parameters.Parameters.Unpack(rawResult);
+
+            if (ret.Size() != 1) return;
+            var err = Codec.RsStringToString(ret.GetParameter<Wrappers.RsString>(0));
+            throw new Exception(err);
+
+        }
+
+        public static void CallScriptFunction(string name, Parameters.Parameters parameters)
+        {
+            var s = Marshal.StringToHGlobalAnsi(name);
+            var rawResult = call_script_function(s, parameters.Pack());
+            Marshal.FreeHGlobal(s);
+            
+            var ret = Parameters.Parameters.Unpack(rawResult);
+
+            if (ret.Size() != 1) return;
+            var err = Codec.RsStringToString(ret.GetParameter<Wrappers.RsString>(0));
+            throw new Exception(err);
+        }
+
 
         public static void Init()
         {
             BindToDll();
             initialize_wasm();
+            
+            LoadScript(@"C:\Users\Westb\Desktop\turing_wasm\target\wasm32-unknown-unknown\debug\turing_wasm.wasm");
+            
+            CallScriptFunction("init", new Parameters.Parameters());
+            
         }
     }
 }

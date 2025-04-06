@@ -71,7 +71,7 @@ namespace Turing.Interop.Parameters
             { typeof(double), ParamType.F64 },
 
             { typeof(bool), ParamType.Boolean },
-            { typeof(string), ParamType.String },
+            { typeof(RsString), ParamType.String },
 
             { typeof(ColorNoteRs), ParamType.ColorNote },
             
@@ -101,30 +101,74 @@ namespace Turing.Interop.Parameters
         {
             if (obj == null)
                 return IntPtr.Zero;
-
+            
             var type = obj.GetType();
+            IntPtr ptr = IntPtr.Zero;
 
-            if (type.IsPrimitive || type == typeof(string))
+            if (type.IsPrimitive)
             {
-                if (type == typeof(string))
+                switch (obj)
                 {
-                    return Marshal.StringToHGlobalAnsi((string)obj);
+                    case byte b:
+                        ptr = Marshal.AllocHGlobal(sizeof(byte));
+                        Marshal.WriteByte(ptr, b);
+                        return ptr;
+
+                    case sbyte sb:
+                        ptr = Marshal.AllocHGlobal(sizeof(sbyte));
+                        Marshal.WriteByte(ptr, (byte)sb);
+                        return ptr;
+
+                    case short s:
+                        ptr = Marshal.AllocHGlobal(sizeof(short));
+                        Marshal.WriteInt16(ptr, s);
+                        return ptr;
+
+                    case ushort us:
+                        ptr = Marshal.AllocHGlobal(sizeof(ushort));
+                        Marshal.WriteInt16(ptr, (short)us);
+                        return ptr;
+
+                    case int i:
+                        ptr = Marshal.AllocHGlobal(sizeof(int));
+                        Marshal.WriteInt32(ptr, i);
+                        return ptr;
+
+                    case uint ui:
+                        ptr = Marshal.AllocHGlobal(sizeof(uint));
+                        Marshal.WriteInt32(ptr, (int)ui);
+                        return ptr;
+
+                    case long l:
+                        ptr = Marshal.AllocHGlobal(sizeof(long));
+                        Marshal.WriteInt64(ptr, l);
+                        return ptr;
+
+                    case ulong ul:
+                        ptr = Marshal.AllocHGlobal(sizeof(ulong));
+                        Marshal.WriteInt64(ptr, (long)ul);
+                        return ptr;
+
+                    case bool b:
+                        ptr = Marshal.AllocHGlobal(sizeof(bool));
+                        Marshal.WriteByte(ptr, b ? (byte)1 : (byte)0);
+                        return ptr;
+
+                    case float f:
+                        ptr = Marshal.AllocHGlobal(sizeof(float));
+                        Marshal.WriteInt32(ptr, BitConverter.ToInt32(BitConverter.GetBytes(f), 0));
+                        return ptr;
+
+                    case double d:
+                        ptr = Marshal.AllocHGlobal(sizeof(double));
+                        Marshal.WriteInt64(ptr, BitConverter.DoubleToInt64Bits(d));
+                        return ptr;
                 }
-
-                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(type));
-                Marshal.StructureToPtr(obj, ptr, false);
-                return ptr;
             }
 
-            // ReSharper disable once InvertIf
-            if (type.IsValueType && type.IsLayoutSequential)
-            {
-                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(type));
-                Marshal.StructureToPtr(obj, ptr, false);
-                return ptr;
-            }
-
-            throw new NotSupportedException($"Cannot marshal type {type.FullName} to unmanaged memory.");
+            ptr = Marshal.AllocHGlobal(Marshal.SizeOf(type));
+            Marshal.StructureToPtr(obj, ptr, false);
+            return ptr;
         }
         
         
@@ -134,6 +178,11 @@ namespace Turing.Interop.Parameters
         {
             _parameters.Add(value);
             return this;
+        }
+
+        public int Size()
+        {
+            return _parameters.Count;
         }
 
         public RsParams Pack()
@@ -169,13 +218,18 @@ namespace Turing.Interop.Parameters
 
         public static Parameters Unpack(RsParams rsParams)
         {
+            
             var parameters = new Parameters();
 
             for (var i = 0; i < rsParams.param_count; i++)
             {
+                Plugin.Info($"1  {rsParams.params_array} ({rsParams.param_count})");
                 var paramPtr = Marshal.ReadIntPtr(rsParams.params_array, i * IntPtr.Size);
+                Plugin.Info("2");
                 var rsParam = Marshal.PtrToStructure<RsParam>(paramPtr);
 
+                Plugin.Info($"Loading value of type {rsParam.type}");
+                
                 var objPtr = rsParam.value;
                 object managedValue = null;
                 switch (rsParam.type)
@@ -201,6 +255,8 @@ namespace Turing.Interop.Parameters
                     case (uint)ParamType.Vec3: managedValue = Marshal.PtrToStructure<Vector3>(objPtr); break;
                     case (uint)ParamType.Quat: managedValue = Marshal.PtrToStructure<Quaternion>(objPtr); break;
                 }
+                
+                Plugin.Info($"Loaded value: {managedValue}");
 
                 parameters.Push(managedValue);
             }
