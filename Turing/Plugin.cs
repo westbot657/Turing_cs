@@ -17,26 +17,26 @@ namespace Turing
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
 
-        private const string logName = "C#";
+        private const string LOGName = "C#";
 
         public static void Info(string message)
         {
-            Log.Info($"[{logName}]: " + message);
+            Log.Info($"[{LOGName}]: " + message);
         }
 
         public static void Debug(string message)
         {
-            Log.Debug($"[{logName}]: " + message);
+            Log.Debug($"[{LOGName}]: " + message);
         }
 
         public static void Critical(string message)
         {
-            Log.Critical($"[{logName}]: " + message);
+            Log.Critical($"[{LOGName}]: " + message);
         }
 
         public static void Error(string message)
         {
-            Log.Error($"[{logName}]: " + message);
+            Log.Error($"[{LOGName}]: " + message);
         }
 
         /// <summary>
