@@ -16,12 +16,12 @@ namespace Turing.Interop.Wrappers
         
         public RsString(string s)
         {
-            strPtr = Marshal.StringToHGlobalUni(s);
+            strPtr = Marshal.StringToHGlobalAnsi(s);
         }
 
         public override string ToString()
         {
-            return Marshal.PtrToStringUni(strPtr) ?? string.Empty;
+            return Marshal.PtrToStringAnsi(strPtr) ?? string.Empty;
         }
 
         public void Free()

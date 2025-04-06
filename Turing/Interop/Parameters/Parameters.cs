@@ -194,7 +194,7 @@ namespace Turing.Interop.Parameters
                     case (uint)ParamType.F64: managedValue = BitConverter.Int64BitsToDouble(Marshal.ReadInt64(objPtr)); break;
 
                     case (uint)ParamType.Boolean: managedValue = Marshal.ReadByte(objPtr) != 0; break;
-                    case (uint)ParamType.String: managedValue = Marshal.PtrToStringAnsi(objPtr); break;
+                    case (uint)ParamType.String: managedValue = Marshal.PtrToStructure<RsString>(objPtr); break;
 
                     case (uint)ParamType.ColorNote: managedValue = Marshal.PtrToStructure<ColorNoteRs>(objPtr); break;
                     
