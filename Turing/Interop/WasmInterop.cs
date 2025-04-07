@@ -98,7 +98,7 @@ namespace Turing.Interop
             
             LoadScript(@"C:\Users\Westb\Desktop\turing_wasm\target\wasm32-unknown-unknown\debug\turing_wasm.wasm");
             
-            CallScriptFunction("init", new Parameters.Parameters());
+            CallScriptFunction("on_load", new Parameters.Parameters());
             
         }
     }
