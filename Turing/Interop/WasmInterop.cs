@@ -80,8 +80,8 @@ namespace Turing.Interop
             var ret = Parameters.Parameters.Unpack(rawResult);
 
             if (ret.Size() != 1) return;
-            var err = Codec.RsStringToString(ret.GetParameter<Wrappers.RsString>(0));
-            throw new Exception(err);
+            var err = Codec.RsStringToString(ret.GetParameter<RsString>(0));
+            throw new Exception($"RS/WASM ERROR: {err}");
 
         }
 
@@ -94,8 +94,8 @@ namespace Turing.Interop
             var ret = Parameters.Parameters.Unpack(rawResult);
 
             if (ret.Size() != 1) return;
-            var err = Codec.RsStringToString(ret.GetParameter<Wrappers.RsString>(0));
-            throw new Exception(err);
+            var err = Codec.RsStringToString(ret.GetParameter<RsString>(0));
+            throw new Exception($"RS/WASM ERROR: {err}");
         }
 
 
