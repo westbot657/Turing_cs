@@ -110,7 +110,8 @@ namespace Turing.Interop
             return str.ToString();
         }
 
-        // I will eventually make these be auto-generated
+        // I will eventually make these be auto-generated,
+        // full type names are required, because technically these types don't exist when source-gen processes them
         [Converter]
         public static Turing.Interop.Wrappers.ColorNoteRs ColorNoteToRsNote(ColorNote note)
         {
