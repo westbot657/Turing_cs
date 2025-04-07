@@ -63,6 +63,14 @@ namespace Turing.Interop
         [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]
         private static extern RsParams call_script_function(IntPtr functionName, RsParams parameters);
 
+        [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]
+        private static extern void free_params(RsParams parameters);
+
+        public static void FreeRsParams(RsParams parameters)
+        {
+            free_params(parameters);
+        }
+        
         public static void LoadScript(string scriptPath)
         {
             var s = Marshal.StringToHGlobalAnsi(scriptPath);

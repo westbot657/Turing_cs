@@ -104,67 +104,32 @@ namespace Turing.Interop.Parameters
                 return IntPtr.Zero;
             
             var type = obj.GetType();
-            IntPtr ptr = IntPtr.Zero;
+            IntPtr ptr;
 
             if (type.IsPrimitive)
             {
+                ptr = Marshal.AllocHGlobal(Marshal.SizeOf(type));
                 switch (obj)
                 {
-                    case byte b:
-                        ptr = Marshal.AllocHGlobal(sizeof(byte));
-                        Marshal.WriteByte(ptr, b);
-                        return ptr;
-
-                    case sbyte sb:
-                        ptr = Marshal.AllocHGlobal(sizeof(sbyte));
-                        Marshal.WriteByte(ptr, (byte)sb);
-                        return ptr;
-
-                    case short s:
-                        ptr = Marshal.AllocHGlobal(sizeof(short));
-                        Marshal.WriteInt16(ptr, s);
-                        return ptr;
-
-                    case ushort us:
-                        ptr = Marshal.AllocHGlobal(sizeof(ushort));
-                        Marshal.WriteInt16(ptr, (short)us);
-                        return ptr;
-
-                    case int i:
-                        ptr = Marshal.AllocHGlobal(sizeof(int));
-                        Marshal.WriteInt32(ptr, i);
-                        return ptr;
-
-                    case uint ui:
-                        ptr = Marshal.AllocHGlobal(sizeof(uint));
-                        Marshal.WriteInt32(ptr, (int)ui);
-                        return ptr;
-
-                    case long l:
-                        ptr = Marshal.AllocHGlobal(sizeof(long));
-                        Marshal.WriteInt64(ptr, l);
-                        return ptr;
-
-                    case ulong ul:
-                        ptr = Marshal.AllocHGlobal(sizeof(ulong));
-                        Marshal.WriteInt64(ptr, (long)ul);
-                        return ptr;
-
-                    case bool b:
-                        ptr = Marshal.AllocHGlobal(sizeof(bool));
-                        Marshal.WriteByte(ptr, b ? (byte)1 : (byte)0);
-                        return ptr;
-
-                    case float f:
-                        ptr = Marshal.AllocHGlobal(sizeof(float));
-                        Marshal.WriteInt32(ptr, BitConverter.ToInt32(BitConverter.GetBytes(f), 0));
-                        return ptr;
-
-                    case double d:
-                        ptr = Marshal.AllocHGlobal(sizeof(double));
-                        Marshal.WriteInt64(ptr, BitConverter.DoubleToInt64Bits(d));
-                        return ptr;
+                    case byte b: Marshal.WriteByte(ptr, b); break;
+                    case sbyte sb: Marshal.WriteByte(ptr, (byte)sb); break;
+                    
+                    case short s: Marshal.WriteInt16(ptr, s); break;
+                    case ushort us: Marshal.WriteInt16(ptr, (short)us); break;
+                    
+                    case int i: Marshal.WriteInt32(ptr, i); break;
+                    case uint ui: Marshal.WriteInt32(ptr, (int)ui); break;
+                    
+                    case long l: Marshal.WriteInt64(ptr, l); break;
+                    case ulong ul: Marshal.WriteInt64(ptr, (long)ul); break;
+                    
+                    case bool b: Marshal.WriteByte(ptr, b ? (byte)1 : (byte)0); break;
+                    
+                    case float f: Marshal.WriteInt32(ptr, BitConverter.ToInt32(BitConverter.GetBytes(f), 0)); break;
+                    case double d: Marshal.WriteInt64(ptr, BitConverter.DoubleToInt64Bits(d)); break;
                 }
+
+                return ptr;
             }
 
             ptr = Marshal.AllocHGlobal(Marshal.SizeOf(type));
@@ -254,8 +219,15 @@ namespace Turing.Interop.Parameters
 
                 parameters.Push(managedValue);
             }
+            
+            Free(rsParams);
 
             return parameters;
+        }
+
+        public static void Free(RsParams rsParams)
+        {
+            WasmInterop.FreeRsParams(rsParams);
         }
         
         public T GetParameter<T>(int index)
