@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using Turing.Interop.Parameters;
+using Turing.Interop.Wrappers;
 
 namespace Turing.Interop
 {
@@ -37,6 +38,20 @@ namespace Turing.Interop
             Plugin.Log.Info("[rs]: " + message);
         }
 
+        [RustCallback("beatmap_add_color_note")]
+        public static void AddColorNoteToMap(ColorNote note)
+        {
+            Plugin.Info($"TODO: add note to map: {note}");
+        }
+
+        [RustCallback("create_color_note")]
+        public static ColorNote CreateColorNote(float beat)
+        {
+
+            Plugin.Critical($"idk how to do this part... (make note at beat {beat})");
+            
+            return new ColorNote(null);
+        }
 
 
         [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]

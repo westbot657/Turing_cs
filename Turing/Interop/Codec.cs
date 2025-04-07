@@ -109,6 +109,20 @@ namespace Turing.Interop
         {
             return str.ToString();
         }
+
+        // I will eventually make these be auto-generated
+        [Converter]
+        public static Turing.Interop.Wrappers.ColorNoteRs ColorNoteToRsNote(ColorNote note)
+        {
+            return note.structInst;
+        }
+
+        [Converter]
+        public static ColorNote RsNoteToColorNote(Turing.Interop.Wrappers.ColorNoteRs note)
+        {
+            var instance = (ColorNote) GCHandle.FromIntPtr(note.ptr).Target;
+            return instance;
+        }
         
     }
     
