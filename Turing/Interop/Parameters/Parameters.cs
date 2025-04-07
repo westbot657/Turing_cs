@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -223,12 +224,7 @@ namespace Turing.Interop.Parameters
 
             for (var i = 0; i < rsParams.param_count; i++)
             {
-                Plugin.Info($"1  {rsParams.params_array} ({rsParams.param_count})");
-                var paramPtr = Marshal.ReadIntPtr(rsParams.params_array, i * IntPtr.Size);
-                Plugin.Info("2");
-                var rsParam = Marshal.PtrToStructure<RsParam>(paramPtr);
-
-                Plugin.Info($"Loading value of type {rsParam.type}");
+                var rsParam = Marshal.PtrToStructure<RsParam>(Marshal.ReadIntPtr(rsParams.params_array + (i * IntPtr.Size)));
                 
                 var objPtr = rsParam.value;
                 object managedValue = null;
@@ -255,8 +251,6 @@ namespace Turing.Interop.Parameters
                     case (uint)ParamType.Vec3: managedValue = Marshal.PtrToStructure<Vector3>(objPtr); break;
                     case (uint)ParamType.Quat: managedValue = Marshal.PtrToStructure<Quaternion>(objPtr); break;
                 }
-                
-                Plugin.Info($"Loaded value: {managedValue}");
 
                 parameters.Push(managedValue);
             }
