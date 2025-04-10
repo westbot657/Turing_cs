@@ -14,7 +14,7 @@ namespace Turing.Interop
     {
         
         // This name is statically defined in source gen, so do NOT change it
-        private const string WasmRs = @"C:\Users\Westb\Desktop\Turing_rs\target\debug\turing_rs.dll";
+        private const string WasmRs = @"C:\Users\Westb\RustroverProjects\Turing_rs\target\debug\turing_rs.dll";
 
         public static readonly List<IDisposable> PersistentMemory = new List<IDisposable>();
 
@@ -79,10 +79,8 @@ namespace Turing.Interop
             
             var ret = Parameters.Parameters.Unpack(rawResult);
 
-            if (ret.Size() != 1) return;
-            var err = Codec.RsStringToString(ret.GetParameter<RsString>(0));
-            throw new Exception($"RS/WASM ERROR: {err}");
-
+            ret.CheckErrorAndThrow();
+            
         }
 
         public static void CallScriptFunction(string name, Parameters.Parameters parameters)
@@ -93,9 +91,7 @@ namespace Turing.Interop
             
             var ret = Parameters.Parameters.Unpack(rawResult);
 
-            if (ret.Size() != 1) return;
-            var err = Codec.RsStringToString(ret.GetParameter<RsString>(0));
-            throw new Exception($"RS/WASM ERROR: {err}");
+            ret.CheckErrorAndThrow();
         }
 
 

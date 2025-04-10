@@ -3,10 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 using Turing.Interop.Wrappers;
 
 namespace Turing.Interop.Parameters
 {
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct InteroperableError
+    {
+        public IntPtr type;
+        public IntPtr message;
+    }
+
+    public class InteropError
+    {
+        public string Type;
+        public string Message;
+    }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct RsParams
@@ -50,6 +64,8 @@ namespace Turing.Interop.Parameters
         Vec3 = 200,
         Quat = 201,
         
+        InteropError = 900,
+        
         Unknown       = -1,
     }
     
@@ -78,6 +94,8 @@ namespace Turing.Interop.Parameters
             
             { typeof(Vector3), ParamType.Vec3 },
             { typeof(Quaternion), ParamType.Quat },
+            
+            { typeof(InteroperableError), ParamType.InteropError }
             // Add more custom types here as needed
         };
 
@@ -215,6 +233,8 @@ namespace Turing.Interop.Parameters
                     
                     case (uint)ParamType.Vec3: managedValue = Marshal.PtrToStructure<Vector3>(objPtr); break;
                     case (uint)ParamType.Quat: managedValue = Marshal.PtrToStructure<Quaternion>(objPtr); break;
+                    
+                    case (uint)ParamType.InteropError: managedValue = Marshal.PtrToStructure<InteroperableError>(objPtr); break;
                 }
 
                 parameters.Push(managedValue);
@@ -225,7 +245,31 @@ namespace Turing.Interop.Parameters
             return parameters;
         }
 
-        public static void Free(RsParams rsParams)
+        [CanBeNull]
+        public InteropError CheckError()
+        {
+            if (_parameters.Count == 0) return null;
+            
+            var param = _parameters[0];
+
+            if (param is InteroperableError err)
+            {
+                return Codec.RsErrorToCsError(err);
+            }
+
+            return null;
+        }
+
+        public void CheckErrorAndThrow()
+        {
+            var error = CheckError();
+            if (error != null)
+            {
+                throw new Exception($"rs/wasm exception: {error.Type}:\n{error.Message}");
+            }
+        }
+
+        private static void Free(RsParams rsParams)
         {
             WasmInterop.FreeRsParams(rsParams);
         }
@@ -242,12 +286,16 @@ namespace Turing.Interop.Parameters
 
             var expectedType = typeof(T);
 
-            if (param.GetType() != expectedType)
+            if (param.GetType() == expectedType) return (T)param;
+            
+            if (param is InteroperableError err)
             {
-                throw new InvalidCastException($"Parameter at index {index} is not of type {expectedType.FullName}. Found: {param.GetType().FullName}");
+                var error = Codec.RsErrorToCsError(err);
+                throw new Exception($"rs/wasm exception: {error.Type}:\n{error.Message}");
             }
 
-            return (T) param;
+            throw new InvalidCastException($"Parameter at index {index} is not of type {expectedType.FullName}. Found: {param.GetType().FullName}");
+
         }
 
     }

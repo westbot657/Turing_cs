@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Turing.Interop.Parameters;
 using Turing.Interop.Wrappers;
 
 namespace Turing.Interop
@@ -108,6 +109,24 @@ namespace Turing.Interop
         public static string RsStringToString(RsString str)
         {
             return str.ToString();
+        }
+
+        [Converter]
+        public static InteropError RsErrorToCsError(InteroperableError err)
+        {
+            var t = Marshal.PtrToStringAnsi(err.type);
+            var m = Marshal.PtrToStringAnsi(err.message);
+
+            return new InteropError { Type = t, Message = m };
+        }
+
+        [Converter]
+        public static InteroperableError CsErrorToRsError(InteropError err)
+        {
+            var t = Marshal.StringToHGlobalAnsi(err.Type);
+            var m = Marshal.StringToHGlobalAnsi(err.Message);
+            
+            return new InteroperableError { type = t, message = m };
         }
 
     }
