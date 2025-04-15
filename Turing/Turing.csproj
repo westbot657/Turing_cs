@@ -117,6 +117,13 @@
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
   </ItemGroup>
   <ItemGroup>
+    <Analyzer Include=".\srcgen\TuringSourceGen.dll">
+      <Include>C:\Users\Westb\RiderProjects\TuringSourceGen\TuringSourceGen\obj\Debug\netstandard2.0\TuringSourceGen.dll</Include>
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </Analyzer>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
       <Version>2.0.0-beta1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
