@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include=".\srcgen\TuringSourceGen.dll">
-      <Include>C:\Users\Westb\RiderProjects\TuringSourceGen\TuringSourceGen\obj\Debug\netstandard2.0\TuringSourceGen.dll</Include>
+      <Include>.\srcgen\TuringSourceGen.dll</Include>
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </Analyzer>
