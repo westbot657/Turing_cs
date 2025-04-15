@@ -117,11 +117,7 @@
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include=".\srcgen\TuringSourceGen.dll">
-      <Include>.\srcgen\TuringSourceGen.dll</Include>
-      <OutputItemType>Analyzer</OutputItemType>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </Analyzer>
+    <Analyzer Include=".\srcgen\TuringSourceGen.dll" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
