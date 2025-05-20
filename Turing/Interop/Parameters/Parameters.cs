@@ -16,8 +16,15 @@ namespace Turing.Interop.Parameters
         public IntPtr message;
     }
 
-    public class InteropError
+    public struct InteropError
     {
+
+        public InteropError(string Type, string Message)
+        {
+            this.Type = Type;
+            this.Message = Message;
+        }
+        
         public string Type;
         public string Message;
     }
@@ -69,7 +76,7 @@ namespace Turing.Interop.Parameters
         Unknown       = -1,
     }
     
-    public class Parameters
+    public struct Parameters
     {
         
         private static readonly Dictionary<Type, ParamType> ParamTypes = new Dictionary<Type, ParamType>()
@@ -156,7 +163,7 @@ namespace Turing.Interop.Parameters
         }
         
         
-        private readonly List<object> _parameters = new List<object>();
+        private List<object> _parameters;
 
         public Parameters Push(object value)
         {
@@ -203,7 +210,7 @@ namespace Turing.Interop.Parameters
         public static Parameters Unpack(RsParams rsParams)
         {
             
-            var parameters = new Parameters();
+            var parameters = new Parameters{ _parameters = new List<object>() };
 
             for (var i = 0; i < rsParams.param_count; i++)
             {
@@ -246,7 +253,7 @@ namespace Turing.Interop.Parameters
         }
 
         [CanBeNull]
-        public InteropError CheckError()
+        public InteropError? CheckError()
         {
             if (_parameters.Count == 0) return null;
             
@@ -265,7 +272,7 @@ namespace Turing.Interop.Parameters
             var error = CheckError();
             if (error != null)
             {
-                throw new Exception($"rs/wasm exception: {error.Type}:\n{error.Message}");
+                throw new Exception($"rs/wasm exception: {error?.Type}:\n{error?.Message}");
             }
         }
 
