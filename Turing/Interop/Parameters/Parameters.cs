@@ -69,7 +69,7 @@ namespace Turing.Interop.Parameters
 
     public struct RsObject
     {
-        public IntPtr ObjectPtr;
+        public IntPtr ptr;
     }
     
     public struct Parameters
