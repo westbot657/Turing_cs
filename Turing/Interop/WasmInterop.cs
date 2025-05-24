@@ -8,12 +8,19 @@ using Turing.Interop.Wrappers;
 
 namespace Turing.Interop
 {
-    
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ParamTypes
+    {
+        public uint count;
+        public IntPtr array;
+    }
+
     [InteropClass("BindToDll")]
     public partial class WasmInterop
     {
         
-        // This name is statically defined in source gen, so do NOT change it
+        // This variable name is statically defined in source gen, so do NOT change it
         private const string WasmRs = @"C:\Users\Westb\RustroverProjects\Turing_rs\target\debug\turing_rs.dll";
 
         public static readonly List<IDisposable> PersistentMemory = new List<IDisposable>();
@@ -31,7 +38,10 @@ namespace Turing.Interop
         [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]
         public static extern void register_function(IntPtr name, IntPtr func);
 
-        
+        [DllImport(dllName: WasmRs, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void generate_wasm_fn(IntPtr name, IntPtr func, ParamTypes paramTypes, ParamTypes returnTypes);
+
+
         [RustCallback("cs_print")]
         public static void CsPrint(string message)
         {

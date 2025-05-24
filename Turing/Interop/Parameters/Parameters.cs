@@ -58,22 +58,18 @@ namespace Turing.Interop.Parameters
         Boolean = 10,
         String  = 11,
 
-        ColorNote     = 100,
-        BombNote      = 101,
-        Arc           = 102,
-        ChainHeadNote = 103,
-        ChainLinkNote = 104,
-        ChainNote     = 105,
-        Wall          = 106,
-        Saber         = 107,
-        Player        = 108,
+        Object  = 100,
         
-        Vec3 = 200,
-        Quat = 201,
+        FuncRef = 200,
         
         InteropError = 900,
         
         Unknown       = -1,
+    }
+
+    public struct RsObject
+    {
+        public IntPtr ObjectPtr;
     }
     
     public struct Parameters
@@ -97,10 +93,7 @@ namespace Turing.Interop.Parameters
             { typeof(bool), ParamType.Boolean },
             { typeof(RsString), ParamType.String },
 
-            { typeof(ColorNoteRs), ParamType.ColorNote },
-            
-            { typeof(Vector3), ParamType.Vec3 },
-            { typeof(Quaternion), ParamType.Quat },
+            { typeof(RsObject), ParamType.Object },
             
             { typeof(InteroperableError), ParamType.InteropError }
             // Add more custom types here as needed
@@ -236,10 +229,7 @@ namespace Turing.Interop.Parameters
                     case (uint)ParamType.Boolean: managedValue = Marshal.ReadByte(objPtr) != 0; break;
                     case (uint)ParamType.String: managedValue = Marshal.PtrToStructure<RsString>(objPtr); break;
 
-                    case (uint)ParamType.ColorNote: managedValue = Marshal.PtrToStructure<ColorNoteRs>(objPtr); break;
-                    
-                    case (uint)ParamType.Vec3: managedValue = Marshal.PtrToStructure<Vector3>(objPtr); break;
-                    case (uint)ParamType.Quat: managedValue = Marshal.PtrToStructure<Quaternion>(objPtr); break;
+                    case (uint)ParamType.Object: managedValue = Marshal.PtrToStructure<RsObject>(objPtr); break;
                     
                     case (uint)ParamType.InteropError: managedValue = Marshal.PtrToStructure<InteroperableError>(objPtr); break;
                 }
