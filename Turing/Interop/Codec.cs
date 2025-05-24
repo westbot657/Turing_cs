@@ -68,8 +68,12 @@ namespace Turing.Interop
         {
             return b;
         }
-        
-        
+
+        [Converter]
+        public static Object RsObjectToObject(RsObject rsObject)
+        {
+            return GCHandle.FromIntPtr(rsObject.ptr).Target;
+        }
 
         // Vec3
         [Converter]
